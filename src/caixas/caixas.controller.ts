@@ -10,33 +10,44 @@ import {
 import { CaixasService } from './caixas.service';
 import { CreateCaixaDto } from './dto/create-caixa.dto';
 import { UpdateCaixaDto } from './dto/update-caixa.dto';
+import { Caixa } from './entities/caixa.entity';
 
 @Controller('caixas')
 export class CaixasController {
   constructor(private readonly caixasService: CaixasService) {}
 
+  // @Post()
+  // create(@Body() createCaixaDto: CreateCaixaDto) {
+  //   return this.caixasService.create(createCaixaDto);
+  // }
+
   @Post()
-  create(@Body() createCaixaDto: CreateCaixaDto) {
-    return this.caixasService.create(createCaixaDto);
+  async create(@Body() caixa: Caixa) {
+    return this.caixasService.create(caixa);
   }
 
   @Get()
-  findAll() {
+  async findAll():Promise<Caixa[]> {
     return this.caixasService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string):Promise<Caixa > {
     return this.caixasService.findOne(+id);
   }
 
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateCaixaDto: UpdateCaixaDto) {
+  //   return this.caixasService.update(+id, updateCaixaDto);
+  // }
+
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCaixaDto: UpdateCaixaDto) {
-    return this.caixasService.update(+id, updateCaixaDto);
+  async update(@Param('id') id: string, @Body() caixa: Caixa): Promise<[number, Caixa[]]> {
+    return this.caixasService.update(+id, caixa);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.caixasService.remove(+id);
   }
 }
