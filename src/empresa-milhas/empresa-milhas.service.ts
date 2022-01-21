@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateEmpresaMilhaDto } from './dto/create-empresa-milha.dto';
 import { UpdateEmpresaMilhaDto } from './dto/update-empresa-milha.dto';
+import { EmpresaMilha } from './entities/empresa-milha.entity';
 
 @Injectable()
 export class EmpresaMilhasService {
-  create(createEmpresaMilhaDto: CreateEmpresaMilhaDto) {
-    return 'This action adds a new empresaMilha';
+
+  constructor(
+    @InjectModel(EmpresaMilha)
+    private empresaMilhaModel: typeof EmpresaMilha
+  ) { }
+
+  async create(createEmpresaMilhaDto: CreateEmpresaMilhaDto):Promise<EmpresaMilha> {
+    let empresaMilha = {...createEmpresaMilhaDto} as EmpresaMilha;
+    return this.empresaMilhaModel.create(empresaMilha);
   }
 
-  findAll() {
-    return `This action returns all empresaMilhas`;
+  async findAll():Promise<EmpresaMilha[]> {
+    return this.empresaMilhaModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} empresaMilha`;
+  async findOne(id: number): Promise<EmpresaMilha> {
+    return this.empresaMilhaModel.findByPk(id);
   }
 
-  update(id: number, updateEmpresaMilhaDto: UpdateEmpresaMilhaDto) {
-    return `This action updates a #${id} empresaMilha`;
+  async update(id: number, updateEmpresaMilhaDto: UpdateEmpresaMilhaDto) {
+    return this.empresaMilhaModel.update(updateEmpresaMilhaDto, {
+      where: {
+        id: id
+      }
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} empresaMilha`;
+  async remove(id: number) {
+    const empresaMilha:EmpresaMilha = await this.findOne(id);
+    empresaMilha.destroy();
   }
 }

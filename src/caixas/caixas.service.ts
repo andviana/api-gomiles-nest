@@ -3,6 +3,19 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateCaixaDto } from './dto/create-caixa.dto';
 import { UpdateCaixaDto } from './dto/update-caixa.dto';
 import { Caixa } from './entities/caixa.entity';
+import { v4 as uuid } from 'uuid'
+
+/** 
+ * TODO:
+ * abrir caixa
+ * fechar caixa
+ * pegar ultimo caixa
+ * verificar caixa aberto
+ * calcular resumo caixa
+ * */
+
+
+
 
 @Injectable()
 export class CaixasService {
@@ -12,12 +25,11 @@ export class CaixasService {
     private caixaModel: typeof Caixa
   ) {}
 
-  // create(createCaixaDto: CreateCaixaDto) {
-  //   this.caixaModel.create(createCaixaDto);
-  // }
-
-  async create(caixa: Caixa) {
-    this.caixaModel.create(caixa);
+  async create(createCaixaDto: CreateCaixaDto):Promise<Caixa> {
+    let caixa = {...createCaixaDto} as Caixa;
+    caixa.codigo = uuid();
+    caixa.dataAbertura = new Date();
+    return this.caixaModel.create(caixa);
   }
 
   async findAll(): Promise<Caixa[]> {
@@ -28,14 +40,10 @@ export class CaixasService {
     return this.caixaModel.findByPk(id);
   }
 
-  // async update(id: number, updateCaixaDto: UpdateCaixaDto) {
-  //   return `This action updates a #${id} caixa`;
-  // }
-
-  async update(id: number, caixa: Caixa):Promise<[number, Caixa[]]> {
-    return this.caixaModel.update(caixa, {
+  async update(id: number, updateCaixaDto: UpdateCaixaDto):Promise<[number, Caixa[]]> {
+    return this.caixaModel.update(updateCaixaDto, {
       where: { 
-        id: caixa.id 
+        id: id 
       }
     });
   }
