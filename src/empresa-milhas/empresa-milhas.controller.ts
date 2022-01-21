@@ -10,36 +10,38 @@ import {
 import { EmpresaMilhasService } from './empresa-milhas.service';
 import { CreateEmpresaMilhaDto } from './dto/create-empresa-milha.dto';
 import { UpdateEmpresaMilhaDto } from './dto/update-empresa-milha.dto';
+import { ValidationPipe } from 'src/pipes/validation.pipe';
+import { EmpresaMilha } from './entities/empresa-milha.entity';
 
 @Controller('empresa-milhas')
 export class EmpresaMilhasController {
   constructor(private readonly empresaMilhasService: EmpresaMilhasService) {}
 
   @Post()
-  create(@Body() createEmpresaMilhaDto: CreateEmpresaMilhaDto) {
+  async create(@Body(new ValidationPipe) createEmpresaMilhaDto: CreateEmpresaMilhaDto):Promise<EmpresaMilha> {
     return this.empresaMilhasService.create(createEmpresaMilhaDto);
   }
 
   @Get()
-  findAll() {
+  async findAll():Promise<EmpresaMilha[]> {
     return this.empresaMilhasService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string):Promise<EmpresaMilha> {
     return this.empresaMilhasService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
-    @Body() updateEmpresaMilhaDto: UpdateEmpresaMilhaDto,
-  ) {
+    @Body(new ValidationPipe) updateEmpresaMilhaDto: UpdateEmpresaMilhaDto,
+  ):Promise<[number, EmpresaMilha[]]> {
     return this.empresaMilhasService.update(+id, updateEmpresaMilhaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.empresaMilhasService.remove(+id);
   }
 }

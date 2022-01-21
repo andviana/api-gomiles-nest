@@ -1,26 +1,55 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateCaixaDto } from './dto/create-caixa.dto';
 import { UpdateCaixaDto } from './dto/update-caixa.dto';
+import { Caixa } from './entities/caixa.entity';
+import { v4 as uuid } from 'uuid'
+
+/** 
+ * TODO:
+ * abrir caixa
+ * fechar caixa
+ * pegar ultimo caixa
+ * verificar caixa aberto
+ * calcular resumo caixa
+ * */
+
+
+
 
 @Injectable()
 export class CaixasService {
-  create(createCaixaDto: CreateCaixaDto) {
-    return 'This action adds a new caixa';
+
+  constructor(
+    @InjectModel(Caixa)
+    private caixaModel: typeof Caixa
+  ) {}
+
+  async create(createCaixaDto: CreateCaixaDto):Promise<Caixa> {
+    let caixa = {...createCaixaDto} as Caixa;
+    caixa.codigo = uuid();
+    caixa.dataAbertura = new Date();
+    return this.caixaModel.create(caixa);
   }
 
-  findAll() {
-    return `This action returns all caixas`;
+  async findAll(): Promise<Caixa[]> {
+    return this.caixaModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} caixa`;
+  async findOne(id: number): Promise<Caixa> {
+    return this.caixaModel.findByPk(id);
   }
 
-  update(id: number, updateCaixaDto: UpdateCaixaDto) {
-    return `This action updates a #${id} caixa`;
+  async update(id: number, updateCaixaDto: UpdateCaixaDto):Promise<[number, Caixa[]]> {
+    return this.caixaModel.update(updateCaixaDto, {
+      where: { 
+        id: id 
+      }
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} caixa`;
+  async remove(id: number) {
+    const caixa:Caixa = await this.findOne(id);
+    caixa.destroy();
   }
 }

@@ -9,7 +9,6 @@ import {
 } from 'sequelize-typescript';
 import { Movimento } from 'src/movimentos/entities/movimento.entity';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
-import { v4 as uuid } from 'uuid';
 
 @Table
 export class Caixa extends Model<Caixa> {

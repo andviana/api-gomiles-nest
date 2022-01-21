@@ -7,36 +7,38 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ValidationPipe } from 'src/pipes/validation.pipe';
 import { CaixasService } from './caixas.service';
 import { CreateCaixaDto } from './dto/create-caixa.dto';
 import { UpdateCaixaDto } from './dto/update-caixa.dto';
+import { Caixa } from './entities/caixa.entity';
 
 @Controller('caixas')
 export class CaixasController {
   constructor(private readonly caixasService: CaixasService) {}
 
   @Post()
-  create(@Body() createCaixaDto: CreateCaixaDto) {
+  async create(@Body(new ValidationPipe) createCaixaDto: CreateCaixaDto):Promise<Caixa> {
     return this.caixasService.create(createCaixaDto);
   }
 
   @Get()
-  findAll() {
+  async findAll():Promise<Caixa[]> {
     return this.caixasService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string):Promise<Caixa > {
     return this.caixasService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCaixaDto: UpdateCaixaDto) {
+  async update(@Param('id') id: string, @Body(new ValidationPipe) updateCaixaDto: UpdateCaixaDto) {
     return this.caixasService.update(+id, updateCaixaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.caixasService.remove(+id);
   }
 }
