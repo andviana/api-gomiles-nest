@@ -40,17 +40,17 @@ export class Entrada extends Model<Entrada> {
   @BelongsTo(() => Programa)
   programa: Programa;
   @ForeignKey(() => Programa)
-  idPrograma: Programa;
+  idPrograma: number;
 
   //manytoone
   @BelongsTo(() => TipoEntrada)
   tipoEntrada: TipoEntrada;
   @ForeignKey(() => TipoEntrada)
-  idTipoEntrada: TipoEntrada;
+  idTipoEntrada: number;
 
   //manytoone
   @BelongsTo(() => Usuario)
   usuario: Usuario;
   @ForeignKey(() => Usuario)
-  idUsuario: Usuario;
+  idUsuario: number;
 }

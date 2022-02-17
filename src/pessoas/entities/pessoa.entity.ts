@@ -1,7 +1,7 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
 
-@Table
+@Table({timestamps:true, paranoid:true})
 export class Pessoa extends Model<Pessoa> {
   @Column({ type: DataType.STRING(), allowNull: false })
   nome: string;

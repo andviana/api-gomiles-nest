@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
+import { Programa } from './entities/programa.entity';
 
 @Injectable()
 export class ProgramasService {
-  create(createProgramaDto: CreateProgramaDto) {
-    return 'This action adds a new programa';
+
+  constructor(
+    @InjectModel(Programa)
+    private programaModel: typeof Programa
+  ) { }
+
+  async create(createProgramaDto: CreateProgramaDto): Promise<Programa> {
+    let programa = { ...createProgramaDto } as Programa;
+    return this.programaModel.create(programa);
   }
 
-  findAll() {
-    return `This action returns all programas`;
+  async findAll(): Promise<Programa[]> {
+    return this.programaModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} programa`;
+  async findOne(id: number): Promise<Programa> {
+    return this.programaModel.findByPk(id);
   }
 
-  update(id: number, updateProgramaDto: UpdateProgramaDto) {
-    return `This action updates a #${id} programa`;
+  async update(id: number, updateProgramaDto: UpdateProgramaDto): Promise<[number, Programa[]]> {
+    return this.programaModel.update(updateProgramaDto, { where: { id: id } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} programa`;
+  async remove(id: number):Promise<void> {
+    const programa = await this.findOne(id);
+    programa.destroy();    
   }
 }

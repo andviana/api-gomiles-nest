@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateTipoEntradaDto } from './dto/create-tipo-entrada.dto';
 import { UpdateTipoEntradaDto } from './dto/update-tipo-entrada.dto';
+import { TipoEntrada } from './entities/tipo-entrada.entity';
 
 @Injectable()
 export class TipoEntradasService {
-  create(createTipoEntradaDto: CreateTipoEntradaDto) {
-    return 'This action adds a new tipoEntrada';
+
+  constructor(
+    @InjectModel(TipoEntrada)
+    private tipoEntradaModel: typeof TipoEntrada
+  ) { }
+
+  async create(createTipoEntradaDto: CreateTipoEntradaDto): Promise<TipoEntrada> {
+    let tipoEntrada = { ...createTipoEntradaDto } as TipoEntrada;
+    return this.tipoEntradaModel.create(tipoEntrada);
   }
 
-  findAll() {
-    return `This action returns all tipoEntradas`;
+  async findAll(): Promise<TipoEntrada[]> {
+    return this.tipoEntradaModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tipoEntrada`;
+  async findOne(id: number): Promise<TipoEntrada> {
+    return this.tipoEntradaModel.findByPk(id);
   }
 
-  update(id: number, updateTipoEntradaDto: UpdateTipoEntradaDto) {
-    return `This action updates a #${id} tipoEntrada`;
+  async update(id: number, updateTipoEntradaDto: UpdateTipoEntradaDto): Promise<[number, TipoEntrada[]]> {
+    return this.tipoEntradaModel.update(updateTipoEntradaDto, { where: { id: id } })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tipoEntrada`;
+  async remove(id: number):Promise<void> {
+    const tipoEntrada = await this.findOne(id);
+    tipoEntrada.destroy()
   }
 }

@@ -33,7 +33,7 @@ export class EmpresaMilhasService {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: number):Promise<void> {
     const empresaMilha:EmpresaMilha = await this.findOne(id);
     empresaMilha.destroy();
   }

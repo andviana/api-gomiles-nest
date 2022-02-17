@@ -37,23 +37,23 @@ export class Movimento extends Model<Movimento> {
   @BelongsTo(() => Caixa)
   caixa: Caixa;
   @ForeignKey(() => Caixa)
-  idCaixa: Caixa;
+  idCaixa: number;
 
   //manytoone
   @BelongsTo(() => Usuario)
   usuario: Usuario;
   @ForeignKey(() => Usuario)
-  idUsuario: Usuario;
+  idUsuario: number;
 
   //onetoone
   @BelongsTo(() => Entrada)
   entrada?: Entrada;
   @ForeignKey(() => Entrada)
-  idEntrada: Entrada;
+  idEntrada: number;
 
   //onetoone
   @BelongsTo(() => Saida)
   saida?: Saida;
   @ForeignKey(() => Saida)
-  idSaida: Saida;
+  idSaida: number;
 }

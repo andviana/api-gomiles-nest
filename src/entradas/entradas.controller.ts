@@ -10,33 +10,38 @@ import {
 import { EntradasService } from './entradas.service';
 import { CreateEntradaDto } from './dto/create-entrada.dto';
 import { UpdateEntradaDto } from './dto/update-entrada.dto';
+import { Entrada } from './entities/entrada.entity';
+import { ValidationPipe } from 'src/pipes/validation.pipe';
 
 @Controller('entradas')
 export class EntradasController {
   constructor(private readonly entradasService: EntradasService) {}
 
   @Post()
-  create(@Body() createEntradaDto: CreateEntradaDto) {
+  async create(@Body( new ValidationPipe) createEntradaDto: CreateEntradaDto):Promise<Entrada> {
     return this.entradasService.create(createEntradaDto);
   }
 
   @Get()
-  findAll() {
+  async findAll():Promise<Entrada[]> {
     return this.entradasService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string):Promise<Entrada> {
     return this.entradasService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEntradaDto: UpdateEntradaDto) {
+  async update(
+    @Param('id') id: string, 
+    @Body( new ValidationPipe) updateEntradaDto: UpdateEntradaDto
+    ):Promise<[number, Entrada[]]> {
     return this.entradasService.update(+id, updateEntradaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<void> {
     return this.entradasService.remove(+id);
   }
 }

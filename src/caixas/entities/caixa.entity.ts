@@ -10,7 +10,7 @@ import {
 import { Movimento } from 'src/movimentos/entities/movimento.entity';
 import { Usuario } from 'src/usuarios/entities/usuario.entity';
 
-@Table
+@Table({timestamps:true, paranoid:true})
 export class Caixa extends Model<Caixa> {
   @Column({ type: DataType.DATE, allowNull: false, defaultValue: DataType.NOW })
   dataAbertura: Date;
@@ -43,7 +43,7 @@ export class Caixa extends Model<Caixa> {
   valorLucroMilhasPeriodo: number;
 
   @Column({ type: DataType.DECIMAL(10, 2) })
-  valorMédioMilhaPeriodo: number;
+  valorMedioMilhaPeriodo: number;
 
   @Column({
     type: DataType.UUID,
@@ -55,8 +55,10 @@ export class Caixa extends Model<Caixa> {
   //manyToOne;
   @BelongsTo(() => Usuario)
   usuarioFechamento: Usuario;
+  
   @ForeignKey(() => Usuario)
-  idUsuarioFechamento: Usuario;
+  @Column({ type: DataType.INTEGER })
+  idUsuarioFechamento: number;
 
   //OnetoMany;
   @HasMany(() => Movimento)
