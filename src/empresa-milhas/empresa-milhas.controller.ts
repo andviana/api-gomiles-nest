@@ -41,7 +41,7 @@ export class EmpresaMilhasController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string):Promise<void> {
     return this.empresaMilhasService.remove(+id);
   }
 }

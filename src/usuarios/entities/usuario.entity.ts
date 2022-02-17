@@ -15,7 +15,7 @@ import { Movimento } from 'src/movimentos/entities/movimento.entity';
 import { Pessoa } from 'src/pessoas/entities/pessoa.entity';
 import { Saida } from 'src/saidas/entities/saida.entity';
 
-@Table
+@Table({timestamps:true, paranoid:true})
 export class Usuario extends Model<Usuario> {
   @Column({ type: DataType.STRING, allowNull: false, unique: true })
   username: string;

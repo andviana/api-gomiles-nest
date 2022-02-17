@@ -2,7 +2,7 @@ import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { Entrada } from 'src/entradas/entities/entrada.entity';
 import { Saida } from 'src/saidas/entities/saida.entity';
 
-@Table
+@Table({timestamps:true, paranoid:true})
 export class Programa extends Model<Programa> {
   @Column({ type: DataType.STRING, allowNull: false })
   nome: string;

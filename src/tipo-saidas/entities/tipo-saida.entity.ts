@@ -2,7 +2,7 @@ import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
 import { Saida } from 'src/saidas/entities/saida.entity';
 
-@Table
+@Table({timestamps:true, paranoid:true})
 export class TipoSaida extends Model<TipoSaida> {
   @Column({ type: DataType.STRING(60), allowNull: false })
   descricao: string;

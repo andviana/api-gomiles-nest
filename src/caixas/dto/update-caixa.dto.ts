@@ -1,6 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { IsBoolean, IsDate, IsDecimal, IsInt, IsObject } from 'class-validator';
-import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import { CreateCaixaDto } from './create-caixa.dto';
 
 export class UpdateCaixaDto extends PartialType(CreateCaixaDto) {
@@ -36,6 +35,6 @@ export class UpdateCaixaDto extends PartialType(CreateCaixaDto) {
     valorMédioMilhaPeriodo: number;
 
     @IsObject()
-    idUsuarioFechamento: Usuario;
+    idUsuarioFechamento: number;
 
 }

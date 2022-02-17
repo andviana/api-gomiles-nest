@@ -3,16 +3,13 @@ import { IsAlphanumeric, IsNotEmpty } from 'class-validator';
 import { CreateEmpresaMilhaDto } from './create-empresa-milha.dto';
 
 export class UpdateEmpresaMilhaDto extends PartialType(CreateEmpresaMilhaDto) {
-    @IsAlphanumeric()
-    @IsNotEmpty()
+    @IsAlphanumeric()    
     nome: string;
 
-    @IsAlphanumeric()
-    @IsNotEmpty()
+    @IsAlphanumeric()    
     logo: string;
 
-    @IsAlphanumeric()
-    @IsNotEmpty()
+    @IsAlphanumeric()    
     url: string;
 
 }
