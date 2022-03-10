@@ -1,16 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CaixasModule } from './caixas/caixas.module';
-import { EmpresaMilhasModule } from './empresa-milhas/empresa-milhas.module';
-import { MovimentosModule } from './movimentos/movimentos.module';
-import { PessoasModule } from './pessoas/pessoas.module';
-import { ProgramasModule } from './programas/programas.module';
-import { EntradasModule } from './entradas/entradas.module';
-import { SaidasModule } from './saidas/saidas.module';
-import { TipoEntradasModule } from './tipo-entradas/tipo-entradas.module';
-import { TipoSaidasModule } from './tipo-saidas/tipo-saidas.module';
-import { UsuariosModule } from './usuarios/usuarios.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Caixa } from './caixas/entities/caixa.entity';
 import { EmpresaMilha } from './empresa-milhas/entities/empresa-milha.entity';
@@ -42,16 +32,18 @@ import { SaidasService } from './saidas/saidas.service';
 import { TipoEntradasService } from './tipo-entradas/tipo-entradas.service';
 import { TipoSaidasService } from './tipo-saidas/tipo-saidas.service';
 import { UsuariosService } from './usuarios/usuarios.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     SequelizeModule.forRoot({
       dialect: 'mysql',
-      host: 'localhost',
+      host: process.env.DB_HOST,
       port: 3306,
-      username: 'root',
-      password: 'teste',
-      database: 'go_miles',
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWD,
+      database: process.env.DB_NAME,
       autoLoadModels: true,
       synchronize: true,
     }),

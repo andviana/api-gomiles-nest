@@ -54,7 +54,7 @@ export class CaixasController {
 
   @Get('teste/www')
   teste(): string {
-    return 'teste www';
+    return 'teste laiana';
   }
 
   

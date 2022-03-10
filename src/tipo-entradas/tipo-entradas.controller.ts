@@ -22,18 +22,24 @@ export class TipoEntradasController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<TipoEntrada> {
     return this.tipoEntradasService.findOne(+id);
-  }
+  }  
 
   @Patch(':id')
   async update(
-    @Param('id') id: string, 
+    @Param('id') id: string,
     @Body() updateTipoEntradaDto: UpdateTipoEntradaDto
-    ):Promise<[number, TipoEntrada[]]> {
+  ): Promise<[number, TipoEntrada[]]> {
     return this.tipoEntradasService.update(+id, updateTipoEntradaDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string):Promise<void> {
+  async remove(@Param('id') id: string): Promise<void> {
     return this.tipoEntradasService.remove(+id);
   }
+
+  @Get('resumo/entradas')
+  resumoEntradas(): Promise<TipoEntrada[]> {
+    return this.tipoEntradasService.resumoEntradas();
+  }
+
 }
