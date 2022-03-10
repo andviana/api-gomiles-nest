@@ -27,51 +27,34 @@ export class EntradasService {
   ) { }
 
   async create(createEntradaDto: CreateEntradaDto): Promise<Entrada> {
-    const { idPrograma, idTipoEntrada, idUsuario, ...rest } = createEntradaDto;
-    const programa = await this.programaModel.findByPk(idPrograma);
-    console.log('progrma: ', programa);
-    const tipoEntrada = await this.tipoEntradaModel.findByPk(idTipoEntrada);
-    const usuario = await this.usuarioModel.findByPk(idUsuario);
+    const { idPrograma, idTipoEntrada, idUsuario, ...rest } = createEntradaDto;    
 
     let entrada = {
-      ...rest,      
-      idPrograma: +programa.id,
-      idTipoEntrada: +tipoEntrada.id,
-      idUsuario: +usuario.id,
-      programa,
-      tipoEntrada,
-      usuario,
+      ...rest,
+      idPrograma,
+      idTipoEntrada,
+      idUsuario,
       codigo: uuid(),
       dataEntrada: new Date(),
-      valorMilha: createEntradaDto.valor / createEntradaDto.milhas      
-    } as Entrada;
-
-    entrada = await this.entradaModel.create(entrada);
+      valorMilha: createEntradaDto.valor / createEntradaDto.milhas
+    } as Entrada;    
 
     let movimento = {
       entrada,
-      usuario,
-      caixa: {} as Caixa,
-      idEntrada: +entrada.id,
-      idUsuario: +usuario.id,
-      idCaixa: +1,      
+      idUsuario,
+      idCaixa: 1,
       codigo: uuid(),
       data: entrada.dataEntrada,
       tipoOperacao: 'C',
       valor: entrada.valor,
       quantidade: entrada.milhas,
-      
     } as Movimento;
+
+    movimento = await this.movimentoModel.create(movimento, { include: [Entrada] });
     
-    movimento = await this.movimentoModel.create(movimento);
-    return  {
-      ...entrada['dataValues'],
-      movimento,
-      programa,
-      tipoEntrada,
-      usuario
-    } as Entrada
-    
+    const resultado = await this.entradaModel.findByPk(movimento.entrada.id, {include:[Movimento,Programa,TipoEntrada,Usuario]});
+    return resultado['dataValues'] as Entrada;
+
   }
 
   async findAll(): Promise<Entrada[]> {

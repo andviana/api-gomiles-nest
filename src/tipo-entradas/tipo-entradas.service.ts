@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { where } from 'sequelize/dist';
+import { Entrada } from 'src/entradas/entities/entrada.entity';
 import { CreateTipoEntradaDto } from './dto/create-tipo-entrada.dto';
 import { UpdateTipoEntradaDto } from './dto/update-tipo-entrada.dto';
 import { TipoEntrada } from './entities/tipo-entrada.entity';
@@ -18,7 +20,7 @@ export class TipoEntradasService {
   }
 
   async findAll(): Promise<TipoEntrada[]> {
-    return this.tipoEntradaModel.findAll();
+    return this.tipoEntradaModel.findAll({include:[Entrada]});
   }
 
   async findOne(id: number): Promise<TipoEntrada> {
@@ -32,5 +34,9 @@ export class TipoEntradasService {
   async remove(id: number):Promise<void> {
     const tipoEntrada = await this.findOne(id);
     tipoEntrada.destroy()
+  }
+
+  async resumoEntradas():Promise<TipoEntrada[]> {
+    return this.tipoEntradaModel.findAll()
   }
 }
